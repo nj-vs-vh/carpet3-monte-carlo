@@ -8,7 +8,9 @@
 #include "QGSP_BERT.hh"
 #include "G4OpticalPhysics.hh"
 
-#define LEN	200
+
+
+#define LEN	500
 
     int NParticleF,nevent;
     double xa,ya;

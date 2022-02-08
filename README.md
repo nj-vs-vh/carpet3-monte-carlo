@@ -1,4 +1,4 @@
-# Carpet-3 Monte-Carlo generation
+# Carpet-3 Monte-Carlo
 
 TODO:
 * Зафиксировать протокол входных и выходных данных Geant4-программы

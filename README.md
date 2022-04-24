@@ -45,7 +45,13 @@ For Geant 11.0.1 installation on Ubuntu 20.04 the process is as follows:
 After all the prerequisites are installed and `.env` is filled with corresponding values, just do
 
 ```bash
-./build.sh
+source scripts/build.sh
+```
+
+To cleanup the installation, use
+
+```bash
+source scripts/clean.sh
 ```
 
 ## TODO:

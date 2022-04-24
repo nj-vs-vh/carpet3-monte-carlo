@@ -2,8 +2,6 @@ name := MuonDetector
 G4TARGET := $(name)
 G4EXLIB := true
 
-G4SYSTEM = Linux-g++
-
 .PHONY: all
 all: lib bin
 

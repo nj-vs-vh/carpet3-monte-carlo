@@ -195,6 +195,6 @@ void C2MuonDetector::DumpGeometricalTree(G4VPhysicalVolume *aVolume, G4int depth
            << aVolume->GetLogicalVolume()->GetNoDaughters() << " "
            << aVolume->GetLogicalVolume()->GetMaterial()->GetName();
     G4cout << G4endl;
-    for (int i = 0; i < aVolume->GetLogicalVolume()->GetNoDaughters(); i++)
+    for (size_t i = 0; i < aVolume->GetLogicalVolume()->GetNoDaughters(); i++)
         DumpGeometricalTree(aVolume->GetLogicalVolume()->GetDaughter(i), depth + 1);
 }

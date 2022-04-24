@@ -1,5 +1,5 @@
 #include "C2Step.hh"
-#include "C2Detector.hh"
+#include "C2MuonDetector.hh"
 #include "G4ios.hh"
 #include "G4Track.hh"
 #include "globals.hh"

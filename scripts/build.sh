@@ -6,7 +6,7 @@ grep -v '^#' .env
 echo
 
 echo "
-Building Muon Detector GEANT4 model"
-cd src/detector/MuonDetector
+Building GEANT4 detector model"
+cd src/detector
 make
-cd ../../..
+cd ../..

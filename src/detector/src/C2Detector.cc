@@ -27,23 +27,24 @@ G4VPhysicalVolume *C2Detector::Construct()
 {
     ConstructMaterials();
     // World volume: 220 x 220 x 220 m
+    // Coordinate system is positioned at it's center
     WorldSolid = new G4Box("WorldSolid", 1.1e2 * m, 1.1e2 * m, 1.1e2 * m);
-    WorldLogical = new G4LogicalVolume(WorldSolid, Vacuum, "WorldLogical", 0, 0, 0);
-    WorldPhysical = new G4PVPlacement(0, G4ThreeVector(), WorldLogical, "WorldPhysical", 0, 0, 0);
+    WorldLogical = new G4LogicalVolume(WorldSolid, Vacuum, "WorldLogical", nullptr, nullptr, nullptr);
+    WorldPhysical = new G4PVPlacement(nullptr, G4ThreeVector(), WorldLogical, "WorldPhysical", 0, 0, false);
     // Rock: 200 x 200 x 100 m
     RockSolid = new G4Box("RockSolid", 1.0e2 * m, 1.0e2 * m, 50.0 * m);
-    RockLogical = new G4LogicalVolume(RockSolid, Basalt, "RockLogical", 0, 0, 0);
-    RockPhysical = new G4PVPlacement(0, G4ThreeVector(0.0 * m, 0.0 * m, -50.0 * m),
+    RockLogical = new G4LogicalVolume(RockSolid, Basalt, "RockLogical", nullptr, nullptr, nullptr);
+    RockPhysical = new G4PVPlacement(nullptr, G4ThreeVector(0.0 * m, 0.0 * m, -50.0 * m),
                                      RockLogical, "RockPhysical", WorldLogical, false, 0);
     // Horizontal concrete plate: 100 x 100 x 0.3 m
     ConcreteSolid = new G4Box("ConcreteSolid", 50.0 * m, 50.0 * m, 0.15 * m);
-    ConcreteLogical = new G4LogicalVolume(ConcreteSolid, Concrete, "ConcreteLogical", 0, 0, 0);
-    ConcretePhysical = new G4PVPlacement(0, G4ThreeVector(0.0 * m, 0.0 * m, (50.0 - 1.85) * m),
+    ConcreteLogical = new G4LogicalVolume(ConcreteSolid, Concrete, "ConcreteLogical", nullptr, nullptr, nullptr);
+    ConcretePhysical = new G4PVPlacement(nullptr, G4ThreeVector(0.0 * m, 0.0 * m, (50.0 - 1.85) * m),
                                          ConcreteLogical, "ConcretePhysical", RockLogical, false, 0);
     // Tunnel: 42 x 5.5 x 2.6 m
     TunnelSolid = new G4Box("TunnelSolid", 2.75 * m, 21.0 * m, 1.3 * m);
-    TunnelLogical = new G4LogicalVolume(TunnelSolid, Vacuum, "TunnelLogical", 0, 0, 0);
-    TunnelPhysical = new G4PVPlacement(0, G4ThreeVector(0.0 * m, 0.0 * m, (50.0 - 2.0 - 1.3) * m),
+    TunnelLogical = new G4LogicalVolume(TunnelSolid, Vacuum, "TunnelLogical", nullptr, nullptr, nullptr);
+    TunnelPhysical = new G4PVPlacement(nullptr, G4ThreeVector(0.0 * m, 0.0 * m, (50.0 - 2.0 - 1.3) * m),
                                        TunnelLogical, "TunnelPhysical", RockLogical, false, 0);
     // Scintillator
     int scintillatorCopyNo = 0;
@@ -52,9 +53,9 @@ G4VPhysicalVolume *C2Detector::Construct()
         for (int j = 0; j < 35; j++)
         {
             PlasticSolid = new G4Box("PlasticSolid", 0.5 * m, 0.5 * m, 0.025 * m); // 1.0 x 1.0 x 0.05 m
-            PlasticLogical = new G4LogicalVolume(PlasticSolid, Plastic, "PlasticLogical", 0, 0, 0);
+            PlasticLogical = new G4LogicalVolume(PlasticSolid, Plastic, "PlasticLogical", nullptr, nullptr, nullptr);
             PlasticPhysical = new G4PVPlacement(
-                0,
+                nullptr,
                 G4ThreeVector((i - 2.0) * 1.01 * m, (j - 17.0) * 1.01 * m, (1.2 - 0.025) * m),
                 PlasticLogical,
                 "PlasticPhysical",

@@ -1,8 +1,8 @@
 source scripts/_common.sh
 
-cd src/detector/MuonDetector
+cd src/detector
 make clean
-cd ../../..
+cd ../..
 
 rm -rf ./bin
 rm -rf ./tmp

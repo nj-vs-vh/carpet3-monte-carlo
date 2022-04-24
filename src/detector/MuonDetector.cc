@@ -21,18 +21,21 @@ int main(int argc, char **argv)
 {
     G4RunManager *RunMng = new G4RunManager;
 
+    // Run manager initialization with our detector and physics
     RunMng->SetUserInitialization(new C2Detector);
     G4VModularPhysicsList *physics = new QGSP_BERT();
     G4OpticalPhysics *optical = new G4OpticalPhysics();
     physics->RegisterPhysics(optical);
     RunMng->SetUserInitialization(physics);
     RunMng->Initialize();
-    //
+
+    // 
     C2Primary *primary = new C2Primary;
     RunMng->SetUserAction(primary);
     RunMng->SetUserAction(new C2Event);
-    C2Step *MyStep = new C2Step;
-    RunMng->SetUserAction(MyStep);
+    C2Step *step = new C2Step;
+    RunMng->SetUserAction(step);
+
     //
     nevent = atoi(argv[argc - 3]);
     xa = 1.0e2 * atoi(argv[argc - 2]); //[m]->[cm]
@@ -56,10 +59,10 @@ int main(int argc, char **argv)
     UImanager->ApplyCommand("/tracking/verbose 0");
     //
     SetOutputName(nevent);
-    MyStep->fp = fopen(OutputName, "w");
-    fprintf(MyStep->fp, "%1d %13.6e %13.6e\n", primary->PrimaryID, primary->E0, primary->Theta0);
+    step->fp = fopen(OutputName, "w");
+    fprintf(step->fp, "%1d %13.6e %13.6e\n", primary->PrimaryID, primary->E0, primary->Theta0);
     RunMng->BeamOn(NParticleF);
-    fclose(MyStep->fp);
+    fclose(step->fp);
     fclose(primary->fpinp);
 
     delete RunMng;

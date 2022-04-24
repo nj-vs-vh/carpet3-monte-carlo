@@ -14,26 +14,30 @@
 int main(int argc, char **argv)
 {
     // TODO: separate agruments parsing into a shared function
-    if (argc <= 1)
+    if (argc <= 2)
     {
         std::cout << "GEANT4 model for Carpet-3 muon detector" << std::endl;
         std::cout << "Usage:" << std::endl;
-        std::cout << "\tMuonDetector [N] [path]" << std::endl;
-        std::cout << "\tMuonDetector [N]" << std::endl;
+        std::cout << "\tMuonDetector [N] [inputFile] [outputFile]" << std::endl;
+        std::cout << "\tMuonDetector [N] [outputFile]" << std::endl;
         std::cout << "\t\tN - number of particles to read" << std::endl;
-        std::cout << "\t\tpath - path to particle batch file; omit to read particles from stdin" << std::endl;
+        std::cout << "\t\tinputFile - path to particle batch file; omit to read particle data from stdin" << std::endl;
+        std::cout << "\t\toutputFile - path to output file" << std::endl;
         exit(1);
     }
     int nInputParticles = atoi(argv[1]);
     std::istream *input;
-    if (argc > 2)
+    std::ofstream *output;
+    if (argc > 3)  // 3 command line arguments
     {
-        std::string filename = argv[2];
-        input = new std::ifstream(filename, std::ios_base::binary);
+        input = new std::ifstream(argv[2], std::ios_base::binary);
+        output = new std::ofstream(argv[3]);
     }
     else
+    {
         input = &std::cin;
-
+        output = new std::ofstream(argv[2]);
+    }
     G4RunManager *runManager = new G4RunManager;
 
     // Run manager initialization with our detector and physics
@@ -47,7 +51,7 @@ int main(int argc, char **argv)
     C2Primary *primary = new C2Primary(input);
     runManager->SetUserAction(primary);
     runManager->SetUserAction(new C2Event);
-    C2Step *step = new C2Step;
+    C2Step *step = new C2Step(output);
     runManager->SetUserAction(step);
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
@@ -55,9 +59,7 @@ int main(int argc, char **argv)
     UImanager->ApplyCommand("/event/verbose 0");
     UImanager->ApplyCommand("/tracking/verbose 0");
 
-    step->fp = fopen("example-output", "w");
     runManager->BeamOn(nInputParticles);
-    fclose(step->fp);
     delete runManager;
     return (0);
 }

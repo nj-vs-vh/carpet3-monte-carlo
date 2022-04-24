@@ -12,105 +12,99 @@
 #include "G4Electron.hh"
 #include "G4Positron.hh"
 
-C2Step::C2Step()
-{
-}
-
-C2Step::~C2Step()
-{
-}
-
 void C2Step::UserSteppingAction(const G4Step *aStep)
 {
-	int trackId, ParticleType;
-	double Ek1, Ek2, t;
-	double x1[3], x2[3], m[3];
-	G4String preStepVolumeName;
-	//
-	G4Track *aTrack = aStep->GetTrack();
-	trackId = aTrack->GetTrackID();
-	const G4DynamicParticle *MyDynamicParticle = aTrack->GetDynamicParticle();
-	G4StepPoint *MyPreStepPoint = aStep->GetPreStepPoint();
-	G4StepPoint *MyPostStepPoint = aStep->GetPostStepPoint();
-	G4VPhysicalVolume *MyPreStepVolume = MyPreStepPoint->GetPhysicalVolume();
-	G4int VolumeNumber = MyPreStepVolume->GetCopyNo();
-	if (MyPreStepVolume != NULL)
-		preStepVolumeName = MyPreStepVolume->GetName();
-	Ek1 = MyPreStepPoint->GetKineticEnergy();
-	Ek2 = MyPostStepPoint->GetKineticEnergy();
-	for (int i = 0; i < 3; i++)
-		x1[i] = MyPreStepPoint->GetPosition()[i];
-	for (int i = 0; i < 3; i++)
-		x2[i] = MyPostStepPoint->GetPosition()[i];
-	for (int i = 0; i < 3; i++)
-		m[i] = MyPreStepPoint->GetMomentumDirection()[i];
-	t = MyPostStepPoint->GetGlobalTime();
-	if (MyDynamicParticle != NULL)
-	{
-		const G4ParticleDefinition *MyParticleDefinition = MyDynamicParticle->GetDefinition();
-		if (MyParticleDefinition != NULL)
-		{
-			const G4String MyParticleName = MyParticleDefinition->GetParticleName();
-			if (MyParticleName == "gamma")
-				ParticleType = 1;
-			else if (MyParticleName == "e+")
-				ParticleType = 2;
-			else if (MyParticleName == "e-")
-				ParticleType = 3;
-			else if (MyParticleName == "mu+")
-				ParticleType = 5;
-			else if (MyParticleName == "mu-")
-				ParticleType = 6;
-			else if (MyParticleName == "pi+")
-				ParticleType = 8;
-			else if (MyParticleName == "pi-")
-				ParticleType = 9;
-			else if (MyParticleName == "kaon0L")
-				ParticleType = 10;
-			else if (MyParticleName == "kaon+")
-				ParticleType = 11;
-			else if (MyParticleName == "kaon-")
-				ParticleType = 12;
-			else if (MyParticleName == "neutron")
-				ParticleType = 13;
-			else if (MyParticleName == "proton")
-				ParticleType = 14;
-			else if (MyParticleName == "anti_proton")
-				ParticleType = 15;
-			else if (MyParticleName == "kaon0S")
-				ParticleType = 16;
-			else if (MyParticleName == "anti_neutron")
-				ParticleType = 25;
-			else if (MyParticleName == "nu_e")
-				ParticleType = 26;
-			else if (MyParticleName == "nu_mu")
-				ParticleType = 27;
-			else if (MyParticleName == "nu_tau")
-				ParticleType = 28;
-			else if (MyParticleName == "anti_nu_e")
-				ParticleType = 29;
-			else if (MyParticleName == "anti_nu_mu")
-				ParticleType = 30;
-			else if (MyParticleName == "anti_nu_tau")
-				ParticleType = 31;
-			else if (MyParticleName == "opticalphoton")
-				ParticleType = 32;
-			else
-			{
-				ParticleType = 33;
-				if ((x1[2] < -2.01e3) && (x1[2] > -2.151e3) && (fabs(x1[0]) < 2.75e3) && (fabs(x1[1]) < 2.1e4))
-				{
-					printf("Unknown particle\n");
-					G4cout << MyParticleName << G4endl;
-				}
-			}
-			//
-			//	    if ((x1[2]<-2.01e3)&&(x1[2]>-2.151e3)&&(fabs(x1[0])<2.75e3)&&(fabs(x1[1])<2.1e4))
-			if (preStepVolumeName == "PlasticPhysical")
-			{
-				fprintf(fp, "%10d %2d %3d  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e\n",
-						trackId, ParticleType, VolumeNumber, x1[0], x1[1], x1[2], x2[0], x2[1], x2[2], m[0], m[1], m[2], Ek1, Ek2, t);
-			}
-		}
-	}
+    G4Track *aTrack = aStep->GetTrack();
+    int trackId = aTrack->GetTrackID();
+    const G4DynamicParticle *dynamicParticle = aTrack->GetDynamicParticle();
+    if (dynamicParticle == NULL)
+        return;
+
+    const G4ParticleDefinition *particleDefinition = dynamicParticle->GetDefinition();
+    if (particleDefinition == NULL)
+        return;
+
+    const G4String particleName = particleDefinition->GetParticleName();
+    int particleID; // accoding to CORSIKA
+    if (particleName == "gamma")
+        particleID = 1;
+    else if (particleName == "e+")
+        particleID = 2;
+    else if (particleName == "e-")
+        particleID = 3;
+    else if (particleName == "mu+")
+        particleID = 5;
+    else if (particleName == "mu-")
+        particleID = 6;
+    else if (particleName == "pi+")
+        particleID = 8;
+    else if (particleName == "pi-")
+        particleID = 9;
+    else if (particleName == "kaon0L")
+        particleID = 10;
+    else if (particleName == "kaon+")
+        particleID = 11;
+    else if (particleName == "kaon-")
+        particleID = 12;
+    else if (particleName == "neutron")
+        particleID = 13;
+    else if (particleName == "proton")
+        particleID = 14;
+    else if (particleName == "anti_proton")
+        particleID = 15;
+    else if (particleName == "kaon0S")
+        particleID = 16;
+    else if (particleName == "anti_neutron")
+        particleID = 25;
+    else if (particleName == "nu_e")
+        particleID = 66;
+    else if (particleName == "nu_mu")
+        particleID = 68;
+    else if (particleName == "nu_tau")
+        particleID = 133;
+    else if (particleName == "anti_nu_e")
+        particleID = 67;
+    else if (particleName == "anti_nu_mu")
+        particleID = 69;
+    else if (particleName == "anti_nu_tau")
+        particleID = 134;
+    else if (particleName == "opticalphoton")
+        particleID = 9900; // corsika uses this for Cherenkov photons, the closest we can get
+    else
+    {
+        particleID = 0;
+        G4cout << "Unknown particle: " << particleName << G4endl;
+    }
+
+    G4StepPoint *preStepPoint = aStep->GetPreStepPoint();
+    G4StepPoint *postStepPoint = aStep->GetPostStepPoint();
+    G4VPhysicalVolume *preStepVolume = preStepPoint->GetPhysicalVolume();
+    G4int volumeNumber = preStepVolume->GetCopyNo();
+    if (preStepVolume == NULL)
+        return;
+
+    G4String preStepVolumeName = preStepVolume->GetName();
+    if (preStepVolumeName != "PlasticPhysical")
+        return;
+
+    double eKinBefore = preStepPoint->GetKineticEnergy();
+    double eKinAfter = postStepPoint->GetKineticEnergy();
+
+    double x1[3], x2[3], m[3];
+    for (int i = 0; i < 3; i++)
+
+        x1[i] = preStepPoint->GetPosition()[i];
+    for (int i = 0; i < 3; i++)
+        x2[i] = postStepPoint->GetPosition()[i];
+    for (int i = 0; i < 3; i++)
+        m[i] = preStepPoint->GetMomentumDirection()[i];
+    double t = postStepPoint->GetGlobalTime();
+
+    // TODO: create a binary format for this data
+    char outputLine[1024];
+    sprintf(
+        outputLine,
+        "%10d %2d %3d  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e  %13.6e %13.6e %13.6e\n",
+        trackId, particleID, volumeNumber, x1[0], x1[1], x1[2], x2[0], x2[1], x2[2], m[0], m[1], m[2], eKinBefore, eKinAfter, t);
+    (*outputStream) << outputLine;
 }

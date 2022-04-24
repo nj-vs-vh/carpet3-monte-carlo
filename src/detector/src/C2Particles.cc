@@ -37,51 +37,53 @@
 #include "G4He3.hh"
 #include "G4GenericIon.hh"
 
-C2Particles::C2Particles(const G4String& name):G4VPhysicsConstructor(name)
-{}
+C2Particles::C2Particles(const G4String &name) : G4VPhysicsConstructor(name)
+{
+}
 
 C2Particles::~C2Particles()
-{}
+{
+}
 
 void C2Particles::ConstructParticle()
 {
-// pseudo-particles
-  G4Geantino::GeantinoDefinition();
-  G4ChargedGeantino::ChargedGeantinoDefinition();
-// gamma
-  G4Gamma::GammaDefinition();
-// optical photon
-  G4OpticalPhoton::OpticalPhotonDefinition();
-// leptons
-  G4Electron::ElectronDefinition();
-  G4Positron::PositronDefinition();
-  G4MuonPlus::MuonPlusDefinition();
-  G4MuonMinus::MuonMinusDefinition();
-  G4NeutrinoE::NeutrinoEDefinition();
-  G4AntiNeutrinoE::AntiNeutrinoEDefinition();
-  G4NeutrinoMu::NeutrinoMuDefinition();
-  G4AntiNeutrinoMu::AntiNeutrinoMuDefinition();  
-// mesons
-  G4PionPlus::PionPlusDefinition();
-  G4PionMinus::PionMinusDefinition();
-  G4PionZero::PionZeroDefinition();
-  G4Eta::EtaDefinition();
-  G4EtaPrime::EtaPrimeDefinition();
-  G4KaonPlus::KaonPlusDefinition();
-  G4KaonMinus::KaonMinusDefinition();
-  G4KaonZero::KaonZeroDefinition();
-  G4AntiKaonZero::AntiKaonZeroDefinition();
-  G4KaonZeroLong::KaonZeroLongDefinition();
-  G4KaonZeroShort::KaonZeroShortDefinition();
-// barions
-  G4Proton::ProtonDefinition();
-  G4AntiProton::AntiProtonDefinition();
-  G4Neutron::NeutronDefinition();
-  G4AntiNeutron::AntiNeutronDefinition();
-// ions
-  G4Deuteron::DeuteronDefinition();
-  G4Triton::TritonDefinition();
-  G4He3::He3Definition();
-  G4Alpha::AlphaDefinition();
-  G4GenericIon::GenericIonDefinition();
+    // pseudo-particles
+    G4Geantino::GeantinoDefinition();
+    G4ChargedGeantino::ChargedGeantinoDefinition();
+    // gamma
+    G4Gamma::GammaDefinition();
+    // optical photon
+    G4OpticalPhoton::OpticalPhotonDefinition();
+    // leptons
+    G4Electron::ElectronDefinition();
+    G4Positron::PositronDefinition();
+    G4MuonPlus::MuonPlusDefinition();
+    G4MuonMinus::MuonMinusDefinition();
+    G4NeutrinoE::NeutrinoEDefinition();
+    G4AntiNeutrinoE::AntiNeutrinoEDefinition();
+    G4NeutrinoMu::NeutrinoMuDefinition();
+    G4AntiNeutrinoMu::AntiNeutrinoMuDefinition();
+    // mesons
+    G4PionPlus::PionPlusDefinition();
+    G4PionMinus::PionMinusDefinition();
+    G4PionZero::PionZeroDefinition();
+    G4Eta::EtaDefinition();
+    G4EtaPrime::EtaPrimeDefinition();
+    G4KaonPlus::KaonPlusDefinition();
+    G4KaonMinus::KaonMinusDefinition();
+    G4KaonZero::KaonZeroDefinition();
+    G4AntiKaonZero::AntiKaonZeroDefinition();
+    G4KaonZeroLong::KaonZeroLongDefinition();
+    G4KaonZeroShort::KaonZeroShortDefinition();
+    // barions
+    G4Proton::ProtonDefinition();
+    G4AntiProton::AntiProtonDefinition();
+    G4Neutron::NeutronDefinition();
+    G4AntiNeutron::AntiNeutronDefinition();
+    // ions
+    G4Deuteron::DeuteronDefinition();
+    G4Triton::TritonDefinition();
+    G4He3::He3Definition();
+    G4Alpha::AlphaDefinition();
+    G4GenericIon::GenericIonDefinition();
 }

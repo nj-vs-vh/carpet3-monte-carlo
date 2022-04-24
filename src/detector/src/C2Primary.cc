@@ -1,5 +1,5 @@
 #include <iostream>
-#include<cmath>
+#include <cmath>
 
 #include "G4Event.hh"
 #include "G4GeneralParticleSource.hh"
@@ -12,7 +12,7 @@
 
 #define PrintFlag 0
 
-C2Primary::C2Primary(std::istream* input): inputStream(input)
+C2Primary::C2Primary(std::istream *input) : inputStream(input)
 {
     currentParticle = Particle();
     particleGun = new G4ParticleGun(1); // TODO: check if batching is available with >1 particles simultaneously
@@ -28,7 +28,7 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
 {
     int particleNumber = anEvent->GetEventID();
 
-    (*inputStream).read((char*)&currentParticle, sizeof(Particle));
+    (*inputStream).read((char *)&currentParticle, sizeof(Particle));
 
     if (PrintFlag > 0)
     {
@@ -124,13 +124,13 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
     }
     //
     particleGun->SetParticlePosition(
-        G4ThreeVector(currentParticle.x * cm, currentParticle.y * cm, 1.0 * m)  // spawning the particle 1m above the (0, 0) plane
+        G4ThreeVector(currentParticle.x * cm, currentParticle.y * cm, 1.0 * m) // spawning the particle 1m above the (0, 0) plane
     );
     double p = sqrt(sqr(currentParticle.p[0]) + sqr(currentParticle.p[1]) + sqr(currentParticle.p[2]));
     double pxNorm = currentParticle.p[0] / p;
     double pyNorm = currentParticle.p[1] / p;
     double pzNorm = currentParticle.p[2] / p;
-    particleGun->SetParticleMomentumDirection(G4ThreeVector(pxNorm, pyNorm, -pzNorm));  // conversion between CORSIKA and GEANT4 z-axes
+    particleGun->SetParticleMomentumDirection(G4ThreeVector(pxNorm, pyNorm, -pzNorm)); // conversion between CORSIKA and GEANT4 z-axes
     double eSquared = sqr(p) + sqr(Mass);
     double eKin = sqrt(eSquared) - Mass;
     particleGun->SetParticleEnergy(eKin * GeV);

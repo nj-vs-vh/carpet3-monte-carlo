@@ -11,11 +11,11 @@
 
 #include "C2MuonDetector.hh"
 
-
 int main(int argc, char **argv)
 {
     // TODO: separate agruments parsing into a shared function
-    if (argc <= 1) {
+    if (argc <= 1)
+    {
         std::cout << "This is MuonDetector GEANT4 model" << std::endl;
         std::cout << "Usage:" << std::endl;
         std::cout << "  ./MuonDetector [N] [path]" << std::endl;
@@ -26,36 +26,38 @@ int main(int argc, char **argv)
     }
     int nInputParticles = atoi(argv[1]);
     std::istream *input;
-    if (argc > 2) {
+    if (argc > 2)
+    {
         std::string filename = argv[2];
         input = new std::ifstream(filename, std::ios_base::binary);
-    } else {
-        input = &std::cin;
     }
+    else
+        input = &std::cin;
 
-    G4RunManager *RunMng = new G4RunManager;
+    G4RunManager *runManager = new G4RunManager;
 
     // Run manager initialization with our detector and physics
-    RunMng->SetUserInitialization(new C2MuonDetector);
+    runManager->SetUserInitialization(new C2MuonDetector);
     G4VModularPhysicsList *physics = new QGSP_BERT();
     G4OpticalPhysics *optical = new G4OpticalPhysics();
     physics->RegisterPhysics(optical);
-    RunMng->SetUserInitialization(physics);
-    RunMng->Initialize();
+    runManager->SetUserInitialization(physics);
+    runManager->Initialize();
 
     C2Primary *primary = new C2Primary(input);
-    RunMng->SetUserAction(primary);
-    RunMng->SetUserAction(new C2Event);
+    runManager->SetUserAction(primary);
+    runManager->SetUserAction(new C2Event);
     C2Step *step = new C2Step;
-    RunMng->SetUserAction(step);
+    runManager->SetUserAction(step);
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
     UImanager->ApplyCommand("/run/verbose 0");
     UImanager->ApplyCommand("/event/verbose 0");
     UImanager->ApplyCommand("/tracking/verbose 0");
 
-    RunMng->BeamOn(nInputParticles);
-
-    delete RunMng;
+    step->fp = fopen("example-output", "w");
+    runManager->BeamOn(nInputParticles);
+    fclose(step->fp);
+    delete runManager;
     return (0);
 }

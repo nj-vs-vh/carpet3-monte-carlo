@@ -29,11 +29,11 @@ G4VPhysicalVolume *C2MuonDetector::Construct()
     ConstructMaterials();
     // World volume: 220 x 220 x 220 m
     // Coordinate system is positioned at it's center
-    WorldSolid = new G4Box("WorldSolid", 1.1e2 * m, 1.1e2 * m, 1.1e2 * m);
+    WorldSolid = new G4Box("WorldSolid", 110 * m, 110 * m, 110 * m);
     WorldLogical = new G4LogicalVolume(WorldSolid, Vacuum, "WorldLogical", nullptr, nullptr, nullptr);
     WorldPhysical = new G4PVPlacement(nullptr, G4ThreeVector(), WorldLogical, "WorldPhysical", 0, 0, false);
     // Rock: 200 x 200 x 100 m
-    RockSolid = new G4Box("RockSolid", 1.0e2 * m, 1.0e2 * m, 50.0 * m);
+    RockSolid = new G4Box("RockSolid", 100 * m, 100 * m, 50.0 * m);
     RockLogical = new G4LogicalVolume(RockSolid, Basalt, "RockLogical", nullptr, nullptr, nullptr);
     RockPhysical = new G4PVPlacement(nullptr, G4ThreeVector(0.0 * m, 0.0 * m, -50.0 * m),
                                      RockLogical, "RockPhysical", WorldLogical, false, 0);
@@ -159,15 +159,15 @@ void C2MuonDetector::ConstructMaterials()
     //
     mt = new G4MaterialPropertiesTable(); // Material Properties: create the object
     Plastic->SetMaterialPropertiesTable(mt);
-    mt->AddProperty("FASTCOMPONENT", Energy, Eff, nE);
-    mt->AddProperty("SLOWCOMPONENT", Energy, Eff, nE);
-    mt->AddProperty("RINDEX", Energy, Rindex, nE);
-    mt->AddProperty("ABSLENGTH", Energy, AbsLength, nE);
-    mt->AddConstProperty("SCINTILLATIONYIELD", 100.0 / MeV);
-    mt->AddConstProperty("RESOLUTIONSCALE", 1.0);
-    mt->AddConstProperty("FASTTIMECONSTANT", 2.0 * ns);
-    mt->AddConstProperty("SLOWTIMECONSTANT", 5.0 * ns);
-    mt->AddConstProperty("YIELDRATIO", 1.0);
+    mt->AddProperty("FASTCOMPONENT", Energy, Eff, nE, true);
+    mt->AddProperty("SLOWCOMPONENT", Energy, Eff, nE, true);
+    mt->AddProperty("RINDEX", Energy, Rindex, nE, true);
+    mt->AddProperty("ABSLENGTH", Energy, AbsLength, nE, true);
+    mt->AddConstProperty("SCINTILLATIONYIELD", 100.0 / MeV, true);
+    mt->AddConstProperty("RESOLUTIONSCALE", 1.0, true);
+    mt->AddConstProperty("FASTTIMECONSTANT", 2.0 * ns, true);
+    mt->AddConstProperty("SLOWTIMECONSTANT", 5.0 * ns, true);
+    mt->AddConstProperty("YIELDRATIO", 1.0, true);
     mt->DumpTable();
     G4cout << G4endl << "The materials defined are : " << G4endl << G4endl;
     G4cout << *(G4Material::GetMaterialTable()) << G4endl;

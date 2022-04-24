@@ -12,6 +12,8 @@ grep -v '^#' .env
 export $(grep -v '^#' .env | xargs)
 
 
+source $G4_CMAKE_PREFIX/bin/geant4.sh
+
 # note that G4INSTALL is not geant4-vx.x.x-install directory from README!
 # we're using an old Geant4Make build system which requires G4INSTALL to be a following
 export G4INSTALL=$G4_CMAKE_PREFIX/share/Geant4-$G4_VERSION/geant4make

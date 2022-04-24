@@ -118,4 +118,6 @@ dkms.conf
 .env
 tmp
 bin
+data
 .vscode
+log.txt

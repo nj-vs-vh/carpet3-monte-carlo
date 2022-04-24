@@ -122,7 +122,8 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
         particleGun->SetParticleDefinition(particleTable->FindParticle("geantino"));
         Mass = 0.0;
     }
-    //
+    
+    // TODO: don't we need to set the starting point of the particle according to it's timing inside the shower?
     particleGun->SetParticlePosition(
         G4ThreeVector(currentParticle.x * cm, currentParticle.y * cm, 1.0 * m) // spawning the particle 1m above the (0, 0) plane
     );

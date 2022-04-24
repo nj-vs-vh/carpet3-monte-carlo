@@ -26,7 +26,7 @@ For Geant 11.0.1 installation on Ubuntu 20.04 the process is as follows:
 
   ```bash
   cd geant4-v11.0.1-build
-  cmake -DCMAKE_INSTALL_PREFIX=../geant4-v11.0.1-install ../geant4-v11.0.1
+  cmake -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=../geant4-v11.0.1-install ../geant4-v11.0.1
   ```
 
 - Build and install GEANT4 using generated makefiles. Parameter `-j2` starts the build in 2 parallel jobs,
@@ -45,13 +45,13 @@ For Geant 11.0.1 installation on Ubuntu 20.04 the process is as follows:
 After all the prerequisites are installed and `.env` is filled with corresponding values, just do
 
 ```bash
-source scripts/build.sh
+bash scripts/build.sh
 ```
 
 To cleanup the installation, use
 
 ```bash
-source scripts/clean.sh
+bash scripts/clean.sh
 ```
 
 ## TODO:

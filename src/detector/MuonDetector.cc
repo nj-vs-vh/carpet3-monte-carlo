@@ -1,12 +1,15 @@
+#include "string.h"
+
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
-#include "C2Detector.hh"
+#include "QGSP_BERT.hh"
+#include "G4OpticalPhysics.hh"
+
 #include "C2Primary.hh"
 #include "C2Event.hh"
 #include "C2Step.hh"
-#include "string.h"
-#include "QGSP_BERT.hh"
-#include "G4OpticalPhysics.hh"
+
+#include "C2MuonDetector.hh"
 
 #define LEN 200
 
@@ -22,7 +25,7 @@ int main(int argc, char **argv)
     G4RunManager *RunMng = new G4RunManager;
 
     // Run manager initialization with our detector and physics
-    RunMng->SetUserInitialization(new C2Detector);
+    RunMng->SetUserInitialization(new C2MuonDetector);
     G4VModularPhysicsList *physics = new QGSP_BERT();
     G4OpticalPhysics *optical = new G4OpticalPhysics();
     physics->RegisterPhysics(optical);

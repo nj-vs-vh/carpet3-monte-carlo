@@ -1,4 +1,3 @@
-#include "C2Detector.hh"
 #include "G4Material.hh"
 #include "G4Element.hh"
 #include "G4MaterialTable.hh"
@@ -13,16 +12,18 @@
 #include "G4ios.hh"
 #include "G4TransportationManager.hh"
 
-C2Detector::C2Detector()
+#include "C2MuonDetector.hh"
+
+C2MuonDetector::C2MuonDetector()
 {
 }
 
-C2Detector::~C2Detector()
+C2MuonDetector::~C2MuonDetector()
 {
     DestroyMaterials();
 }
 
-G4VPhysicalVolume *C2Detector::Construct()
+G4VPhysicalVolume *C2MuonDetector::Construct()
 /* The main method for constructing the world volume  */
 {
     ConstructMaterials();
@@ -71,7 +72,7 @@ G4VPhysicalVolume *C2Detector::Construct()
     return WorldPhysical;
 }
 
-void C2Detector::ConstructMaterials()
+void C2MuonDetector::ConstructMaterials()
 {
     G4int NComponents;
     G4double Z;
@@ -172,7 +173,7 @@ void C2Detector::ConstructMaterials()
     G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
 
-void C2Detector::DestroyMaterials()
+void C2MuonDetector::DestroyMaterials()
 {
     size_t i;
     G4MaterialTable *matTable = (G4MaterialTable *)G4Material::GetMaterialTable();
@@ -185,7 +186,7 @@ void C2Detector::DestroyMaterials()
     elemTable->clear();
 }
 
-void C2Detector::DumpGeometricalTree(G4VPhysicalVolume *aVolume, G4int depth)
+void C2MuonDetector::DumpGeometricalTree(G4VPhysicalVolume *aVolume, G4int depth)
 {
     for (int isp = 0; isp < depth; isp++)
         G4cout << "  ";

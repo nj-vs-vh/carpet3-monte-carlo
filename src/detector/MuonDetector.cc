@@ -16,12 +16,12 @@ int main(int argc, char **argv)
     // TODO: separate agruments parsing into a shared function
     if (argc <= 1)
     {
-        std::cout << "This is MuonDetector GEANT4 model" << std::endl;
+        std::cout << "GEANT4 model for Carpet-3 muon detector" << std::endl;
         std::cout << "Usage:" << std::endl;
-        std::cout << "  ./MuonDetector [N] [path]" << std::endl;
-        std::cout << "  ./MuonDetector [N]" << std::endl;
-        std::cout << "      N - number of particles to read" << std::endl;
-        std::cout << "      path - path to particle batch file; omit to read particles from stdin" << std::endl;
+        std::cout << "\tMuonDetector [N] [path]" << std::endl;
+        std::cout << "\tMuonDetector [N]" << std::endl;
+        std::cout << "\t\tN - number of particles to read" << std::endl;
+        std::cout << "\t\tpath - path to particle batch file; omit to read particles from stdin" << std::endl;
         exit(1);
     }
     int nInputParticles = atoi(argv[1]);

@@ -123,10 +123,11 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
         Mass = 0.0;
     }
     
-    // TODO: don't we need to set the starting point of the particle according to it's timing inside the shower?
     particleGun->SetParticlePosition(
         G4ThreeVector(currentParticle.x * cm, currentParticle.y * cm, 1.0 * m) // spawning the particle 1m above the (0, 0) plane
     );
+    // TODO: CORSIKA times may nees some preprocessing (e.g. subtract the first particle arrival time)
+    particleGun->SetParticleTime(currentParticle.t);
     double p = sqrt(sqr(currentParticle.p[0]) + sqr(currentParticle.p[1]) + sqr(currentParticle.p[2]));
     double pxNorm = currentParticle.p[0] / p;
     double pyNorm = currentParticle.p[1] / p;

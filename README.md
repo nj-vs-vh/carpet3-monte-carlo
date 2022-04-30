@@ -1,6 +1,6 @@
 # Carpet-3 Monte-Carlo
 
-## Installation
+## Setup
 
 The Monte-Carlo simulation requires external dependencies and a build step.
 The configuration and parameters for all these steps is stored in [`.env`](https://www.dotenv.org/) file.
@@ -20,6 +20,7 @@ source scripts/activate.sh  --verbose  # to print out all the variables
 ### Prerequisites
 
 #### GEANT4
+
 See [intallation guide](https://indico.cern.ch/event/679723/contributions/2792554/attachments/1559217/2453759/Geant4InstallationGuide.pdf)
 for different options on different platforms.
 
@@ -47,6 +48,16 @@ For Geant 11.0.1 installation on Ubuntu 20.04 the process is as follows:
 - Specify a full path to your `geant4-v11.0.1-install` directory in `.env` file in `G4_CMAKE_PREFIX` variable.
 
 
+#### CORSIKA
+
+TBD
+
+
+#### COAST and pyCOAST
+
+TBD
+
+
 ### Building executables
 
 After all the prerequisites are installed and `.env` is filled with corresponding values, just do
@@ -61,9 +72,27 @@ To cleanup the installation, use
 bash scripts/clean.sh
 ```
 
-## TODO:
+### Pipeline setup
 
-* Зафиксировать протокол входных и выходных данных Geant4-программы
-* Наметить план по другим детекторам (Geant4-коды по аналогии с мюонным)
-* Начальная версия snakemake-пайплайна для запуска CORSIKA/Geant4/промежуточных скриптов
-* Общий скрипт сборки/установки для портативности
+The Monte-Carlo pipeline consists of multiple C++ executables and Python programs. To orchetrate their execution in
+the correct order we use [`snakemake`](https://snakemake.readthedocs.io/en/stable/index.html). The full setup of our snakemake pipeline is described here.
+
+#### Install mamba
+
+We use [`mamba`](https://github.com/mamba-org/mamba) package manager to install third party Python dependencies, including `snakemake` itself.
+
+You can download it from [here](https://github.com/conda-forge/miniforge#mambaforge) or install on top of existing `conda` installation:
+
+```bash
+conda install -n base -c conda-forge mamba
+```
+
+#### Install snakemake
+
+```bash
+export ENV_NAME=carpet3  # or choose your own name
+mamba create -c conda-forge -c bioconda -n $ENV_NAME snakemake
+mamba activate $ENV_NAME
+```
+
+

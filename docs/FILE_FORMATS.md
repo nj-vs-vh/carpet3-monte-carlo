@@ -1,9 +1,11 @@
-# File formats used throughout the package
+# Custom file formats
 
 ## Particle stream
 
-Simplistic format to store or transmit a bunch of particles (usually previously simulated by the CORSIKA).
-Consists of a stream of 28-byte structs, encoding information about a single particle.
+**File format**: `.prtcls`
+
+Simplistic format to store or transmit a bunch of particles (usually previously simulated by CORSIKA).
+Essentially a stream of 28-byte structs, each storing information about a single particle.
 
 The fields are:
 - `id`, integer, given according to CORSIKA id system (see [Guide](https://web.iap.kit.edu/corsika/usersguide/usersguide.pdf), table at p. 120)
@@ -11,7 +13,7 @@ The fields are:
 - position on observation level `x`, `y`, floating point numbers, given in **cm**
   - ⚠️ may be given in any coordinate system, depending on context
 - arrival time `t` at observation level, floating point number in **nsec**
-  - ⚠️ may be given relative to any moment in time, depending on context 
+  - ⚠️ may be given relative to any moment in time, depending on context
 
 ### C++ [struct](../src/detector/include/C2Primary.hh):
 
@@ -42,3 +44,15 @@ class Particle:
     def pack(self) -> bytes:
         return struct.pack("iffffff", self.id, self.px, self.py, self.pz, self.x, self.y, self.t)
 ```
+
+## Geant4 output file
+
+⚠️ TBD
+
+## template
+
+**File format**: `.extension`
+
+Short description with purpose, structure etc
+
+Usage examples in different programming languages

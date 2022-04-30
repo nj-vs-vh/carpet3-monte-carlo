@@ -1,4 +1,4 @@
-source scripts/_common.sh
+source scripts/activate.sh
 
 echo "
 Configuration read from .env file"

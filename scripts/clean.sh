@@ -1,4 +1,4 @@
-source scripts/_common.sh
+source scripts/activate.sh
 
 cd src/detector
 make clean

@@ -10,6 +10,13 @@ Make sure to create your own private (not tracked in git) copy of it with
 cp .env.example .env
 ```
 
+To activate your current environment (i.e. set all the necessary environment variables), from project root run
+
+```bash
+source scripts/activate.sh
+source scripts/activate.sh  --verbose  # to print out all the variables
+```
+
 ### Prerequisites
 
 #### GEANT4

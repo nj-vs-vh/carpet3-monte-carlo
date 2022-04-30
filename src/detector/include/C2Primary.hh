@@ -21,14 +21,14 @@ struct Particle
 class C2Primary : public G4VUserPrimaryGeneratorAction
 {
 public:
-    C2Primary(std::istream *input);
+    C2Primary(std::istream *input, bool verbose);
     ~C2Primary();
     void GeneratePrimaries(G4Event *anEvent);
     G4ParticleTable *particleTable;
 
 private:
     std::istream *inputStream;
-    struct Particle currentParticle;
     G4ParticleGun *particleGun;
-    int readCurrentParticle(int n);
+    struct Particle currentParticle;
+    bool printInputParticles;
 };

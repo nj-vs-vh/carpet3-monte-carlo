@@ -10,9 +10,8 @@
 
 #include "C2Primary.hh"
 
-#define PrintFlag 0
 
-C2Primary::C2Primary(std::istream *input) : inputStream(input)
+C2Primary::C2Primary(std::istream *input, bool verbose) : inputStream(input), printInputParticles(verbose)
 {
     currentParticle = Particle();
     particleGun = new G4ParticleGun(1); // TODO: check if batching is available with >1 particles simultaneously
@@ -30,7 +29,7 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
 
     (*inputStream).read((char *)&currentParticle, sizeof(Particle));
 
-    if (PrintFlag > 0)
+    if (printInputParticles)
     {
         printf(
             "Particle %i: ID=%3d px=%+.0e py=%+.0e pz=%+.0e x=%+.0e y=%+.0e t=%+.0e\n",
@@ -127,7 +126,7 @@ void C2Primary::GeneratePrimaries(G4Event *anEvent)
         G4ThreeVector(currentParticle.x * cm, currentParticle.y * cm, 1.0 * m) // spawning the particle 1m above the (0, 0) plane
     );
     // TODO: CORSIKA times may nees some preprocessing (e.g. subtract the first particle arrival time)
-    particleGun->SetParticleTime(currentParticle.t);
+    particleGun->SetParticleTime(currentParticle.t * nanosecond);
     double p = sqrt(sqr(currentParticle.p[0]) + sqr(currentParticle.p[1]) + sqr(currentParticle.p[2]));
     double pxNorm = currentParticle.p[0] / p;
     double pyNorm = currentParticle.p[1] / p;

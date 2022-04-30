@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from io import BytesIO
 import os
 from pathlib import Path
 from random import random
@@ -19,8 +20,9 @@ class Particle:
     t: float
 
     def pack(self) -> bytes:
-        return struct.pack("iffffff", self.id, self.px, self.py, self.pz, self.x, self.y, self.t)
-
+        return struct.pack(
+            "iffffff", self.id, self.px, self.py, self.pz, self.x, self.y, self.t
+        )
 
 
 def spawn_muons(n: int) -> List[Particle]:
@@ -45,19 +47,29 @@ ROOT_DIR = CUR_DIR / ".."
 DATA_DIR = (ROOT_DIR / "data").resolve()
 EXEC_DIR = Path(os.environ["CARPET3_BIN_DIR"])
 
-n = 100
-
-input_file = DATA_DIR / "example-input.prtcls"
-with open(DATA_DIR / input_file, "wb") as f:
-    for p in spawn_muons(n):
-        f.write(p.pack())
+n_muons = 100
 
 output_file = DATA_DIR / "example-output.txt"
-subprocess.run(
-    [
+
+input_file = DATA_DIR / "example-input.prtcls"
+input_file_contents = b"".join(p.pack() for p in spawn_muons(n_muons))
+input_file.write_bytes(input_file_contents)
+
+
+def run(stdin: bool, verbose: bool):
+    cmd = [
         str(EXEC_DIR / "MuonDetector"),
-        str(n),
-        str(input_file),
+        str(n_muons),
+        str(input_file) if not stdin else "-",
         str(output_file),
     ]
-)
+    if verbose:
+        cmd.append("--verbose")
+
+    p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    p.communicate(input=input_file_contents if stdin else None)
+
+
+run(stdin=False, verbose=False)
+run(stdin=False, verbose=True)
+run(stdin=True, verbose=False)

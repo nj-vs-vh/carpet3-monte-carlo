@@ -18,26 +18,25 @@ int main(int argc, char **argv)
     {
         std::cout << "GEANT4 model for Carpet-3 muon detector" << std::endl;
         std::cout << "Usage:" << std::endl;
-        std::cout << "\tMuonDetector [N] [inputFile] [outputFile]" << std::endl;
-        std::cout << "\tMuonDetector [N] [outputFile]" << std::endl;
+        std::cout << "\tMuonDetector [N] [inputFile] [outputFile] <flags>" << std::endl;
         std::cout << "\t\tN - number of particles to read" << std::endl;
-        std::cout << "\t\tinputFile - path to particle batch file; omit to read particle data from stdin" << std::endl;
+        std::cout << "\t\tinputFile - path to particle batch file; user '-' to read particle data from stdin" << std::endl;
         std::cout << "\t\toutputFile - path to output file" << std::endl;
         exit(1);
     }
     int nInputParticles = atoi(argv[1]);
     std::istream *input;
-    std::ofstream *output;
-    if (argc > 3)  // 3 command line arguments
-    {
-        input = new std::ifstream(argv[2], std::ios_base::binary);
-        output = new std::ofstream(argv[3]);
-    }
-    else
-    {
+    if (strcmp(argv[2], "-") == 0)
         input = &std::cin;
-        output = new std::ofstream(argv[2]);
-    }
+    else
+        input = new std::ifstream(argv[2], std::ios_base::binary);
+    std::ofstream *output = new std::ofstream(argv[3]);
+
+    bool verbose = false;
+    for (int i = 4; i < argc; i++)
+        if ((strcmp(argv[i], "-v") == 0) || (strcmp(argv[i], "--verbose") == 0))
+            verbose = true;
+
     G4RunManager *runManager = new G4RunManager;
 
     // Run manager initialization with our detector and physics
@@ -48,13 +47,14 @@ int main(int argc, char **argv)
     runManager->SetUserInitialization(physics);
     runManager->Initialize();
 
-    C2Primary *primary = new C2Primary(input);
+    C2Primary *primary = new C2Primary(input, verbose);
     runManager->SetUserAction(primary);
     runManager->SetUserAction(new C2Event);
     C2Step *step = new C2Step(output);
     runManager->SetUserAction(step);
 
     G4UImanager *UImanager = G4UImanager::GetUIpointer();
+    // TODO: configure verbosity based on verbose flag
     UImanager->ApplyCommand("/run/verbose 0");
     UImanager->ApplyCommand("/event/verbose 0");
     UImanager->ApplyCommand("/tracking/verbose 0");

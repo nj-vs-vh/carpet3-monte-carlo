@@ -1,9 +1,4 @@
-source scripts/activate.sh
-
-echo "
-Configuration read from .env file"
-grep -v '^#' .env
-echo
+source scripts/activate.sh --verbose
 
 echo "
 Building GEANT4 detector model"

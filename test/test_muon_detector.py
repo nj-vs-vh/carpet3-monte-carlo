@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import os
 from pathlib import Path
 from random import random
 import struct
@@ -42,11 +43,11 @@ def spawn_muons(n: int) -> List[Particle]:
 CUR_DIR = Path(__file__).parent
 ROOT_DIR = CUR_DIR / ".."
 DATA_DIR = (ROOT_DIR / "data").resolve()
-EXEC_DIR = (ROOT_DIR / "bin/Linux-g++").resolve()
+EXEC_DIR = Path(os.environ["CARPET3_BIN_DIR"])
 
 n = 100
 
-input_file = DATA_DIR / "example-input"
+input_file = DATA_DIR / "example-input.prtcls"
 with open(DATA_DIR / input_file, "wb") as f:
     for p in spawn_muons(n):
         f.write(p.pack())

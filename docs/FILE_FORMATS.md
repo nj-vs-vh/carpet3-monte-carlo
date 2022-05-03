@@ -5,7 +5,7 @@
 **File format**: `.prtcls`
 
 Simplistic format to store or transmit a bunch of particles (usually previously simulated by CORSIKA).
-Essentially a stream of 28-byte structs, each storing information about a single particle.
+Consists of an `int` header (number of particles) and a stream of 28-byte structs, each storing information about a single particle.
 
 The fields are:
 - `id`, integer, given according to CORSIKA id system (see [Guide](https://web.iap.kit.edu/corsika/usersguide/usersguide.pdf), table at p. 120)

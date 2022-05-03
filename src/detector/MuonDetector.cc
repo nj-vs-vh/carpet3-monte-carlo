@@ -18,19 +18,21 @@ int main(int argc, char **argv)
     {
         std::cout << "GEANT4 model for Carpet-3 muon detector" << std::endl;
         std::cout << "Usage:" << std::endl;
-        std::cout << "\tMuonDetector [N] [inputFile] [outputFile] <flags>" << std::endl;
-        std::cout << "\t\tN - number of particles to read" << std::endl;
-        std::cout << "\t\tinputFile - path to particle batch file; user '-' to read particle data from stdin" << std::endl;
+        std::cout << "\tMuonDetector [inputFile] [outputFile] <flags>" << std::endl;
+        std::cout << "\t\tinputFile - path to particle stream file; use '-' to read from stdin" << std::endl;
         std::cout << "\t\toutputFile - path to output file" << std::endl;
         exit(1);
     }
-    int nInputParticles = atoi(argv[1]);
     std::istream *input;
-    if (strcmp(argv[2], "-") == 0)
+    if (strcmp(argv[1], "-") == 0)
         input = &std::cin;
     else
-        input = new std::ifstream(argv[2], std::ios_base::binary);
-    std::ofstream *output = new std::ofstream(argv[3]);
+        input = new std::ifstream(argv[1], std::ios_base::binary);
+
+    int nInputParticles;
+    (*input).read((char *)&nInputParticles, sizeof(int));
+
+    std::ofstream *output = new std::ofstream(argv[2]);
 
     bool verbose = false;
     for (int i = 4; i < argc; i++)

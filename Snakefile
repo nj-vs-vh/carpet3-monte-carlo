@@ -1,4 +1,7 @@
-rule xy:
+envvars:
+    "CARPET3_BIN_DIR"
+
+rule all:
     default_target: True
     input:
         pass
@@ -6,3 +9,8 @@ rule xy:
         pass
     shell:
         echo {output}
+
+
+rule muon_detector:
+    input:
+        

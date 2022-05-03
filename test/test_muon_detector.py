@@ -47,29 +47,32 @@ ROOT_DIR = CUR_DIR / ".."
 DATA_DIR = (ROOT_DIR / "data").resolve()
 EXEC_DIR = Path(os.environ["CARPET3_BIN_DIR"])
 
-n_muons = 100
+def run():
+    n_muons = 100
 
-output_file = DATA_DIR / "example-output.txt"
+    output_file = DATA_DIR / "example-output.txt"
 
-input_file = DATA_DIR / "example-input.prtcls"
-input_file_contents = b"".join(p.pack() for p in spawn_muons(n_muons))
-input_file.write_bytes(input_file_contents)
-
-
-def run(stdin: bool, verbose: bool):
-    cmd = [
-        str(EXEC_DIR / "MuonDetector"),
-        str(n_muons),
-        str(input_file) if not stdin else "-",
-        str(output_file),
-    ]
-    if verbose:
-        cmd.append("--verbose")
-
-    p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-    p.communicate(input=input_file_contents if stdin else None)
+    input_file = DATA_DIR / "example-input.prtcls"
+    input_file_contents = struct.pack("i", n_muons) + b"".join(p.pack() for p in spawn_muons(n_muons))
+    input_file.write_bytes(input_file_contents)
 
 
-run(stdin=False, verbose=False)
-run(stdin=False, verbose=True)
-run(stdin=True, verbose=False)
+    def run_muon_detector(stdin: bool, verbose: bool):
+        cmd = [
+            str(EXEC_DIR / "MuonDetector"),
+            str(input_file) if not stdin else "-",
+            str(output_file),
+        ]
+        if verbose:
+            cmd.append("--verbose")
+
+        p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        p.communicate(input=input_file_contents if stdin else None)
+
+
+    run_muon_detector(stdin=False, verbose=False)
+    run_muon_detector(stdin=False, verbose=True)
+    run_muon_detector(stdin=True, verbose=False)
+
+
+run()

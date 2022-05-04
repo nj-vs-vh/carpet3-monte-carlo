@@ -121,3 +121,5 @@ bin
 data
 .vscode
 log.txt
+runs
+.snakemake

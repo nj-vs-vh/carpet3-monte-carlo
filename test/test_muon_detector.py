@@ -45,6 +45,7 @@ def spawn_muons(n: int) -> List[Particle]:
 CUR_DIR = Path(__file__).parent
 ROOT_DIR = CUR_DIR / ".."
 DATA_DIR = (ROOT_DIR / "data").resolve()
+DATA_DIR.mkdir(exist_ok=True)
 EXEC_DIR = Path(os.environ["CARPET3_BIN_DIR"])
 
 def run():

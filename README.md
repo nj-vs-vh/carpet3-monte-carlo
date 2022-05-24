@@ -95,4 +95,24 @@ mamba create -c conda-forge -c bioconda -n $ENV_NAME snakemake
 mamba activate $ENV_NAME
 ```
 
+## Running Snakemake pipeline
 
+First you will need to create a directory for run data, for example
+
+```bash
+mkdir runs
+# all the simulated files will live inside this directory
+# the internal directory structure is defined in the Snakefile and
+# must not be manually changed
+mkdir runs/example
+```
+
+Finally, run snakemake with
+
+```bash
+snakemake \
+  --directory runs/example \
+  --cores 3
+```
+
+See [full list](https://snakemake.readthedocs.io/en/stable/executing/cli.html#all-options) of Snakemake command line options for reference
